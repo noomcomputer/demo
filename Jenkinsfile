@@ -100,8 +100,8 @@ pipeline {
                 // Example of deploying using SSH to a remote host
                 // Requires Jenkins SSH plugin and pre-configured SSH credentials
                 //sh 'ssh -o StrictHostKeyChecking=no user@remote-server-ip "docker pull your-dockerhub-username/your-app-image-name:latest && docker stop your-app-container || true && docker rm your-app-container || true && docker run -d --name your-app-container -p 8080:8080 your-dockerhub-username/your-app-image-name:latest"'
-				//sh "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"
-				sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"'
+				sh "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"
+				//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"'
             }
         }
     }
