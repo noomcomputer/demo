@@ -97,7 +97,7 @@ pipeline {
                 }
             }
         }*/
-        stage('Deploy to Remote Server') {
+        /*stage('Deploy to Remote Server') {
             steps {
                 // Example of deploying using SSH to a remote host
                 // Requires Jenkins SSH plugin and pre-configured SSH credentials
@@ -106,7 +106,7 @@ pipeline {
 				//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"'
 				sh 'ssh -l root beonesuccess.com "bash pwd"'
             }
-        }
+        }*/
         /*stage('Deploy via SSH Agent') {
             steps {
                 // The 'remote-server-ssh-key' ID must match your Jenkins credential ID
