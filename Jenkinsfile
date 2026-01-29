@@ -56,8 +56,9 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    dockerImage = docker.build("local/my-app:${version}")
+                    //dockerImage = docker.build("local/my-app:${version}")
 					//dockerImage = docker.build("noomcomputer/repository:${version}")
+					dockerImage = docker.build("demo:${version}")
                 }
             }
         }
@@ -68,14 +69,15 @@ pipeline {
                     //docker.withRegistry('http://centos1kubemaster:30031') {
                     //docker.withRegistry('http://localhost:30031') {
                     //docker.withRegistry('https://registry.gitlab.com') {
-                    docker.withRegistry('https://beonesuccess.com:5000') {
+                    //docker.withRegistry('https://beonesuccess.com:5000') {
+					docker.withRegistry('http://beonesuccess.com:5000') {
                         dockerImage.push()
                     }
                 }
             }
         }
         stage('Deployment') {
-            steps {
+            /*steps {
                 withKubeConfig([credentialsId: 'kebernetes-access-token', serverUrl: 'https://192.168.217.128:8443']) {
 					sh '/usr/local/bin/kubectl version'
 					sh '/usr/local/bin/kubectl config view'
@@ -84,7 +86,7 @@ pipeline {
                     //sh '/usr/local/bin/kubectl delete -f k8s.deployment.yml --namespace=jenkins'
                     sh '/usr/local/bin/kubectl apply -f k8s.deployment.yml --namespace=jenkins'
                 }
-            }
+            }*/
         }
     }
 }
