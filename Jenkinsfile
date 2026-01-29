@@ -69,8 +69,7 @@ pipeline {
                     //docker.withRegistry('http://centos1kubemaster:30031') {
                     //docker.withRegistry('http://localhost:30031') {
                     //docker.withRegistry('https://registry.gitlab.com') {
-                    //docker.withRegistry('https://beonesuccess.com:5000') {
-					docker.withRegistry('http://beonesuccess.com:5000') {
+                    docker.withRegistry('https://beonesuccess.com:5000') {
                         dockerImage.push()
                     }
                 }
