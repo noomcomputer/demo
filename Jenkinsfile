@@ -104,17 +104,75 @@ pipeline {
                 //sh 'ssh -o StrictHostKeyChecking=no user@remote-server-ip "docker pull your-dockerhub-username/your-app-image-name:latest && docker stop your-app-container || true && docker rm your-app-container || true && docker run -d --name your-app-container -p 8080:8080 your-dockerhub-username/your-app-image-name:latest"'
 				//sh "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"
 				//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com "docker stop demo || true && docker rm demo || true && docker run -d --name demo -p 8083:8083 demo:latest"'
-				sh 'ssh -l root beonesuccess.com "pwd"'
+				sh 'ssh -l root beonesuccess.com "bash pwd"'
             }
         }*/
         stage('Deploy via SSH Agent') {
-            steps {
+            /*steps {
                 // The 'remote-server-ssh-key' ID must match your Jenkins credential ID
                 sshagent(credentials: ['remote-server-ssh-key']) {
                     // Use standard 'sh' (shell) commands with the -p flag for the port
                     //sh 'scp -P 2222 ./your-artifact.jar remote-username@your-remote-host-ip:/path/to/remote/directory'
                     //sh 'ssh -p 2222 remote-username@your-remote-host-ip "bash /path/to/remote/directory/deploy.sh"'
-					sh 'ssh -p 2522 root@beonesuccess.com "pwd"'
+					sh 'ssh -p 2522 root@beonesuccess.com "bash pwd"'
+                }
+            }*/
+            steps {
+                script {
+                    // Define remote configuration including a specific port
+                    def remote = [:]
+                    remote.host = 'beonesuccess.com'
+                    remote.port = 2522 // Specify your custom port here
+                    remote.user = 'root'
+                    //remote.identity = 'your-private-key-content' // Or use identityFile
+					remote.identity = 
+'-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----'
+					
+                    remote.allowAnyHosts = true // Use with caution, see Jenkins docs for secure host checking
+
+                    // Example: Copy a file
+                    //sshPut remote: remote, from: 'your-artifact.jar', into: '/path/to/remote/directory'
+
+                    // Example: Execute a command/script
+                    //sshScript remote: remote, script: 'bash /path/to/remote/directory/deploy.sh'
+					sshScript remote: remote, script: 'bash pwd'
                 }
             }
         }
