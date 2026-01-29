@@ -38,7 +38,7 @@ pipeline {
 				}
             }
 		}*/
-        /*stage('Build') {
+        stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
@@ -52,7 +52,7 @@ pipeline {
                     junit 'target/surefire-reports/*.xml'
                 }
             }
-        }*/
+        }
         stage('Build image') {
             steps {
                 script {
