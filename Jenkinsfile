@@ -221,6 +221,21 @@ pipeline {
                 }
             }
         }
+        stage('SSH Step Multiple Command') {
+            steps {
+                // Use the exact ID here
+                sshagent(credentials: ['beonesuccess.com']) {
+                    sh '''
+                        # Commands within this block share the same ssh-agent session context
+                        ssh root@beonesuccess.com -p 2522 '
+                          pwd;
+                          docker image ls;
+                          docker ps;
+                        '
+                    '''
+                }
+            }
+        }
 		stage('Deploy via SSH Agent') {
 			steps {
 				sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
