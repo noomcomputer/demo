@@ -7,8 +7,13 @@ pipeline {
     }
 
     environment {
-        version = '1.0.1'
+        VERSION = '1.0.1'
         dockerImage = ''
+        // Define your Docker Hub username/repo here
+        DOCKERHUB_REPO = "noomcomputer/demo" 
+        // The ID of the Jenkins credential you created in Step 1
+        DOCKERHUB_CREDENTIAL_ID = "dockerhub-login"
+		DOCKERHUB_ACCESS_TOKEN = "dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g"
     }
 
     stages {
@@ -53,15 +58,15 @@ pipeline {
                 }
             }
         }*/
-        stage('Build image') {
+        /*stage('Build image to local repo') {
             steps {
                 script {
-                    //dockerImage = docker.build("local/my-app:${version}")
-					//dockerImage = docker.build("noomcomputer/repository:${version}")
-					dockerImage = docker.build("demo:${version}")
+                    //dockerImage = docker.build("local/my-app:${VERSION}")
+					//dockerImage = docker.build("noomcomputer/repository:${VERSION}")
+					dockerImage = docker.build("demo:${VERSION}")
                 }
             }
-        }
+        }*/
         /*stage('Push image') {
             steps {
                 script {
@@ -85,6 +90,20 @@ pipeline {
                 }
             }
         }*/
+        stage('Push image') {
+            steps {
+                script {
+                    // Use the withRegistry block to authenticate before building/pushing
+                    docker.withRegistry('', '${DOCKERHUB_ACCESS_TOKEN}') {
+                        def customImage = docker.build("${DOCKERHUB_REPO}:${VERSION}")
+                        
+                        // Push the image to Docker Hub
+                        customImage.push()
+                        //customImage.push("latest") // Optional: push with 'latest' tag
+                    }
+                }
+            }
+        }
         /*stage('Deployment') {
             steps {
                 withKubeConfig([credentialsId: 'kebernetes-access-token', serverUrl: 'https://192.168.217.128:8443']) {
