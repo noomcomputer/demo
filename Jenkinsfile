@@ -152,6 +152,9 @@ pipeline {
 
                     // Run the image as a new container
                     sh "docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}"
+
+					// Log out (optional but good practice)
+					sh "docker logout"
                 }
             }
         }
