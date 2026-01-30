@@ -216,15 +216,16 @@ pipeline {
             steps {
                 // Use the exact ID here
                 sshagent(credentials: ['beonesuccess.com']) {
-                    //sh 'ssh root@beonesuccess.com -p 2522 "ls -l"'
-					sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "ls -l"'
+                    sh 'ssh root@beonesuccess.com -p 2522 "ls -l"'
+					//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "ls -l"'
                 }
             }
         }
 		stage('Deploy via SSH Agent') {
 			steps {
 				sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
-					sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
+					sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
+					//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
 					//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
 				}
 			}
