@@ -90,7 +90,7 @@ pipeline {
                 }
             }
         }*/
-        stage('Push image') {
+        /*stage('Push image') {
             steps {
                 script {
                     // Use the withRegistry block to authenticate before building/pushing
@@ -103,6 +103,23 @@ pipeline {
                         //customImage.push("latest") // Optional: push with 'latest' tag
                     }
                 }
+            }
+        }*/
+        stage('Push image') {
+            steps {
+				// The access token is securely passed via the environment variable
+				//sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
+				sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
+
+				// Build the Docker image (replace 'youruser/yourrepo:latest' with your details)
+				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
+				sh "docker build -t ${imageName} ."
+
+				// Push the image to Docker Hub
+				sh "docker push ${imageName}"
+
+				// Log out (optional but good practice)
+				sh "docker logout"
             }
         }
         /*stage('Deployment') {
