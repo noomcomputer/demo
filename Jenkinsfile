@@ -212,6 +212,14 @@ pipeline {
                 }
             }
         }*/
+        stage('SSH Step') {
+            steps {
+                // Use the exact ID here
+                sshagent(credentials: ['beonesuccess.com']) {
+                    sh 'ssh root@beonesuccess.com -p 2522 "ls -l"'
+                }
+            }
+        }
 		stage('Deploy via SSH Agent') {
 			steps {
 				sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
