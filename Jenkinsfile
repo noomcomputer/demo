@@ -94,7 +94,8 @@ pipeline {
             steps {
                 script {
                     // Use the withRegistry block to authenticate before building/pushing
-                    docker.withRegistry('', '${DOCKERHUB_ACCESS_TOKEN}') {
+                    //docker.withRegistry('', '${DOCKERHUB_ACCESS_TOKEN}') {
+					docker.withRegistry('', 'dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g') {
                         def customImage = docker.build("${DOCKERHUB_REPO}:${VERSION}")
                         
                         // Push the image to Docker Hub
