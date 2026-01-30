@@ -212,6 +212,14 @@ pipeline {
                 }
             }
         }*/
+		stage('Deploy via SSH Agent') {
+			steps {
+				sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
+					sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
+					//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
+				}
+			}
+		}
     }
 
     post {
@@ -222,12 +230,12 @@ pipeline {
 				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
 
                 // Remove the local Docker image
-                sh 'echo "Cleaning up local image: $imageName"'
+                echo "Cleaning up local image: ${imageName}"
                 // The -f (force) flag might be necessary if containers are still referencing it
                 try {
 					sh "docker rmi -f ${imageName}"
                 } catch (Exception e) {
-                    sh 'echo "Failed to remove image ${imageName}. Ensure no containers are using it."'
+                    echo "Failed to remove image ${imageName}. Ensure no containers are using it."
                 }
             }
         }
