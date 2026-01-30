@@ -222,7 +222,7 @@ pipeline {
 				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
 
                 // Remove the local Docker image
-                echo "Cleaning up local image: ${imageName}"
+                echo "Cleaning up local image: $imageName"
                 // The -f (force) flag might be necessary if containers are still referencing it
                 try {
 					sh "docker rmi -f ${imageName}"
