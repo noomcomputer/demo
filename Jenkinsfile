@@ -107,22 +107,22 @@ pipeline {
         }*/
         stage('Push image') {
             steps {
-				// The access token is securely passed via the environment variable
-				//sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
-				sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
-				//sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
+                script {
+					// The access token is securely passed via the environment variable
+					//sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
+					sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
+					//sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
 
-				// Build the Docker image (replace 'youruser/yourrepo:latest' with your details)
-				//def imageName = '${DOCKERHUB_REPO}:${VERSION}'
-				//sh "docker build -t ${imageName} ."
-				sh "docker build -t ${DOCKERHUB_REPO}:${VERSION} ."
+					// Build the Docker image (replace 'youruser/yourrepo:latest' with your details)
+					def imageName = '${DOCKERHUB_REPO}:${VERSION}'
+					sh "docker build -t ${imageName} ."
 
-				// Push the image to Docker Hub
-				//sh "docker push ${imageName}"
-				sh "docker push ${DOCKERHUB_REPO}:${VERSION}"
+					// Push the image to Docker Hub
+					sh "docker push ${imageName}"
 
-				// Log out (optional but good practice)
-				sh "docker logout"
+					// Log out (optional but good practice)
+					sh "docker logout"
+                }
             }
         }
         stage('Pull and Deploy Docker Image') {
@@ -212,5 +212,24 @@ pipeline {
                 }
             }
         }*/
+    }
+
+    post {
+        // This block runs after the pipeline finishes, regardless of success or failure
+        always {
+            script {
+				// Define the image name
+				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
+
+                // Remove the local Docker image
+                echo "Cleaning up local image: ${imageName}"
+                // The -f (force) flag might be necessary if containers are still referencing it
+                try {
+					sh "docker rmi -f ${imageName}"
+                } catch (Exception e) {
+                    echo "Failed to remove image $${imageName}. Ensure no containers are using it."
+                }
+            }
+        }
     }
 }
