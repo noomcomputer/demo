@@ -112,11 +112,13 @@ pipeline {
 				sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
 
 				// Build the Docker image (replace 'youruser/yourrepo:latest' with your details)
-				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
-				sh "docker build -t ${imageName} ."
+				//def imageName = '${DOCKERHUB_REPO}:${VERSION}'
+				//sh "docker build -t ${imageName} ."
+				sh "docker build -t ${DOCKERHUB_REPO}:${VERSION} ."
 
 				// Push the image to Docker Hub
-				sh "docker push ${imageName}"
+				//sh "docker push ${imageName}"
+				sh "docker push ${DOCKERHUB_REPO}:${VERSION}"
 
 				// Log out (optional but good practice)
 				sh "docker logout"
