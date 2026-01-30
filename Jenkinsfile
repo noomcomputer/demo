@@ -227,7 +227,7 @@ pipeline {
                 try {
 					sh "docker rmi -f ${imageName}"
                 } catch (Exception e) {
-                    echo "Failed to remove image $${imageName}. Ensure no containers are using it."
+                    echo "Failed to remove image ${imageName}. Ensure no containers are using it."
                 }
             }
         }
