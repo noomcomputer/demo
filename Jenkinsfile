@@ -109,7 +109,8 @@ pipeline {
             steps {
 				// The access token is securely passed via the environment variable
 				//sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
-				sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
+				sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
+				//sh 'echo "${DOCKERHUB_ACCESS_TOKEN}" | docker login --username noomcomputer --password-stdin'
 
 				// Build the Docker image (replace 'youruser/yourrepo:latest' with your details)
 				//def imageName = '${DOCKERHUB_REPO}:${VERSION}'
