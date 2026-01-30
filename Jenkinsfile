@@ -216,7 +216,8 @@ pipeline {
             steps {
                 // Use the exact ID here
                 sshagent(credentials: ['beonesuccess.com']) {
-                    sh 'ssh root@beonesuccess.com -p 2522 "ls -l"'
+                    //sh 'ssh root@beonesuccess.com -p 2522 "ls -l"'
+					sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "ls -l"'
                 }
             }
         }
