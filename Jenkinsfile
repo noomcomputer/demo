@@ -251,7 +251,7 @@ pipeline {
         // This block runs after the pipeline finishes, regardless of success or failure
         always {
             script {
-				// Define the image name
+				/*// Define the image name
 				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
 
                 // Remove the local Docker image
@@ -261,7 +261,7 @@ pipeline {
 					sh "docker rmi -f ${imageName}"
                 } catch (Exception e) {
                     echo "Failed to remove image ${imageName}. Ensure no containers are using it."
-                }
+                }*/
 
 				// cleanup unused images
                 try {
