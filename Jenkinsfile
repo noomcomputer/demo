@@ -263,12 +263,19 @@ pipeline {
                     echo "Failed to remove image ${imageName}. Ensure no containers are using it."
                 }
 
-				// cleanup unused images and volumes
+				// cleanup unused images
                 try {
-					sh 'docker image prune -a --volumes --filter "until=24h" --force'
+					sh 'docker image prune -a --filter "until=24h" --force'
+                } catch (Exception e) {
+                    echo "Failed to cleanup unused images."
+                }
+
+				/*// cleanup unused images and volumes
+                try {
+					//sh 'docker system prune -a --volumes --filter "until=24h" --force'
                 } catch (Exception e) {
                     echo "Failed to cleanup unused images and volumes."
-                }
+                }*/
             }
         }
     }
