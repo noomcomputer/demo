@@ -241,10 +241,6 @@ pipeline {
 		stage('Deploy via SSH Agent') {
 			steps {
                 script {
-					def remoteHost = "beonesuccess.com";
-					def remotePort = "2522";
-					def remoteCommand = "ls -ltr" // Groovy variable
-
                     // Define the image name
                     def imageName = '${DOCKERHUB_REPO}:${VERSION}'
                     // Define the container name and port mapping
@@ -273,6 +269,18 @@ pipeline {
 					// Log out (optional but good practice)
 					//sh "docker logout"
 
+					def remoteHost = "beonesuccess.com";
+					def remotePort = "2522";
+					def remoteCommand = "ls -ltr" // Groovy variable
+					def remoteCommandDocker = "
+						docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
+						docker stop ${containerName} || true;
+						docker rm ${containerName} || true;
+						docker pull ${imageName};
+						docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName};
+						docker logout || true
+					" // Groovy variable
+
 					sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
 						//sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
 						//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
@@ -280,6 +288,7 @@ pipeline {
 
 						sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
 						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommand}"
+						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommandDocker}"
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
