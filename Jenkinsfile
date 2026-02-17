@@ -275,6 +275,15 @@ pipeline {
                 }
 			}
 		}
+        stage('Deploy to Minikube') {
+            steps {
+                script {
+                    // Use the kubectl command to apply the Kubernetes YAML file
+                    // Ensure the 'kubectl' command is available in the Jenkins environment
+                    sh 'kubectl apply -f k8s-deployment.yaml'
+                }
+            }
+        }
     }
 
     post {
