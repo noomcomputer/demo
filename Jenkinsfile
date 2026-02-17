@@ -272,13 +272,7 @@ pipeline {
 					def remoteHost = "beonesuccess.com";
 					def remotePort = "2522";
 					def remoteCommand = "ls -ltr" // Groovy variable
-					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN} \
-						docker stop ${containerName} || true \
-						docker rm ${containerName} || true \
-						docker pull ${imageName} \
-						docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName} \
-						docker logout || true
-					" // Groovy variable
+					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN} || docker stop ${containerName} || true || docker rm ${containerName} || true || docker pull ${imageName} || docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName} || docker logout || true" // Groovy variable
 
 					sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
 						//sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
