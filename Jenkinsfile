@@ -246,41 +246,19 @@ pipeline {
                     // Define the container name and port mapping
                     def containerName = 'demo'
                     def containerPortMapping = '8083:8083'
-                    // Define the credentials ID (if using a private image)
-                    //def credentialsId = 'dockerhub-login' // Change if your ID is different
-
-                    // Optional: Login to Docker Hub if using a private image
-                    // Use withCredentials to securely access stored credentials
-                    //withCredentials([usernamePassword(credentialsId: credentialsId, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    //    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
-                    //}
-					//sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
-
-                    // Optional: Stop and remove any existing container with the same name
-                    //sh "docker stop ${containerName} || true"
-                    //sh "docker rm ${containerName} || true"
-
-                    // Pull the latest image from Docker Hub
-                    //sh "docker pull ${imageName}"
-
-                    // Run the image as a new container
-                    //sh "docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}"
-
-					// Log out (optional but good practice)
-					//sh "docker logout"
 
 					def remoteHost = "beonesuccess.com";
 					def remotePort = "2522";
 					def remoteCommand = "ls -ltr" // Groovy variable
-					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}; docker stop ${containerName} || true; docker rm ${containerName} || true; docker pull ${imageName}; docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}; docker logout || true" // Groovy variable
+					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}; docker stop ${containerName} || true; docker rm ${containerName} || true; docker pull ${imageName}; docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}; docker logout || true;" // Groovy variable
 
 					sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
 						//sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
 						//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
 						//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
 
-						sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
-						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommand}"
+						//sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
+						//sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommand}"
 						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommandDocker}"
 						//sh '''
 						//	# Commands within this block share the same ssh-agent session context
