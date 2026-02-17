@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-angular-app-service
+spec:
+  type: NodePort
+  selector:
+    app: sample-angular-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-angular-app-deployment
+  labels:
+    app: sample-angular-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-angular-app
+  template:
+    metadata:
+      labels:
+        app: sample-angular-app
+    spec:
+      containers:
+      - name: nginx
+        image: beonesuccess.com:5000/local/sample-angular-app:1.0.0
+        ports:
+        - containerPort: 80
+      #imagePullSecrets: 
+      #- name: remote-gitlab-secret
