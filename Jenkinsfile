@@ -277,12 +277,12 @@ pipeline {
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
-							  docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g
 							  docker stop demo || true
 							  docker rm demo || true
+							  docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g
 							  docker pull demo:1.0.1
-							  docker run -d --name demo -p 8083:8083 demo:1.0.1
 							  docker logout
+							  docker run -d --name demo -p 8083:8083 demo:1.0.1
 							'
 						'''
 					}
