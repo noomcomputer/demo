@@ -121,7 +121,7 @@ pipeline {
 					sh "docker push ${imageName}"
 
 					// Log out (optional but good practice)
-					sh "docker logout"
+					//sh "docker logout"
                 }
             }
         }
@@ -141,7 +141,7 @@ pipeline {
                     //withCredentials([usernamePassword(credentialsId: credentialsId, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     //    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                     //}
-					sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
+					//sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
 
                     // Optional: Stop and remove any existing container with the same name
                     sh "docker stop ${containerName} || true"
@@ -154,7 +154,7 @@ pipeline {
                     sh "docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}"
 
 					// Log out (optional but good practice)
-					sh "docker logout"
+					//sh "docker logout"
                 }
             }
         }*/
@@ -279,9 +279,7 @@ pipeline {
 							ssh root@beonesuccess.com -p 2522 '
 							  docker stop demo || true
 							  docker rm demo || true
-							  docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g
 							  docker pull demo:1.0.1
-							  docker logout
 							  docker run -d --name demo -p 8083:8083 demo:1.0.1
 							'
 						'''
@@ -295,6 +293,13 @@ pipeline {
         // This block runs after the pipeline finishes, regardless of success or failure
         always {
             script {
+				// logout from docker hub
+                try {
+					sh 'docker logout || true'
+                } catch (Exception e) {
+                    echo "Failed to cleanup unused images."
+                }
+
 				/*// Define the image name
 				def imageName = '${DOCKERHUB_REPO}:${VERSION}'
 
