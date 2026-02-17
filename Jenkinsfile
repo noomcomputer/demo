@@ -125,7 +125,7 @@ pipeline {
                 }
             }
         }
-        stage('Pull and Deploy Docker Image') {
+        /*stage('Pull and Deploy Docker Image Local') {
             steps {
                 script {
                     // Define the image name
@@ -157,7 +157,7 @@ pipeline {
 					sh "docker logout"
                 }
             }
-        }
+        }*/
         /*stage('Deployment') {
             steps {
                 withKubeConfig([credentialsId: 'kebernetes-access-token', serverUrl: 'https://192.168.217.128:8443']) {
@@ -242,6 +242,34 @@ pipeline {
 					sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
 					//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
 					//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
+					
+                    // Define the image name
+                    def imageName = '${DOCKERHUB_REPO}:${VERSION}'
+                    // Define the container name and port mapping
+                    def containerName = 'demo'
+                    def containerPortMapping = '8083:8083'
+                    // Define the credentials ID (if using a private image)
+                    //def credentialsId = 'dockerhub-login' // Change if your ID is different
+
+                    // Optional: Login to Docker Hub if using a private image
+                    // Use withCredentials to securely access stored credentials
+                    //withCredentials([usernamePassword(credentialsId: credentialsId, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    //    sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                    //}
+					sh "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}"
+
+                    // Optional: Stop and remove any existing container with the same name
+                    sh "docker stop ${containerName} || true"
+                    sh "docker rm ${containerName} || true"
+
+                    // Pull the latest image from Docker Hub
+                    sh "docker pull ${imageName}"
+
+                    // Run the image as a new container
+                    sh "docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}"
+
+					// Log out (optional but good practice)
+					sh "docker logout"
 				}
 			}
 		}
