@@ -280,6 +280,9 @@ pipeline {
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
+                              echo "${containerName}"
+                              REMOTE_VAR="${imageName}"
+                              echo "Value on remote: \$REMOTE_VAR"
 							  echo My variable is: $DOCKERHUB_ACCESS_TOKEN;
 							  docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
 							  docker stop demo || true;
