@@ -280,8 +280,8 @@ pipeline {
 							  docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g
 							  docker stop demo || true
 							  docker rm demo || true
-							  docker pull demo
-							  docker run -d --name demo -p 8083:8083 demo
+							  docker pull demo:1.0.1
+							  docker run -d --name demo -p 8083:8083 demo:1.0.1
 							  docker logout
 							'
 						'''
