@@ -279,6 +279,7 @@ pipeline {
 						//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
 
 						sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
+						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommand}"
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
