@@ -272,7 +272,7 @@ pipeline {
 					def remoteHost = "beonesuccess.com";
 					def remotePort = "2522";
 					def remoteCommand = "ls -ltr" // Groovy variable
-					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN} || docker stop ${containerName} || true || docker rm ${containerName} || true || docker pull ${imageName} || docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName} || docker logout || true" // Groovy variable
+					def remoteCommandDocker = "docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN}; docker stop ${containerName} || true; docker rm ${containerName} || true; docker pull ${imageName}; docker run -d --name ${containerName} -p ${containerPortMapping} ${imageName}; docker logout || true" // Groovy variable
 
 					sshagent(credentials: ['beonesuccess.com']) { // Use the credential ID
 						//sh 'ssh root@beonesuccess.com -p 2522 "uptime"' // Example command
@@ -282,17 +282,17 @@ pipeline {
 						sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
 						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommand}"
 						sh "ssh root@${remoteHost} -p ${remotePort} ${remoteCommandDocker}"
-						sh '''
-							# Commands within this block share the same ssh-agent session context
-							ssh root@beonesuccess.com -p 2522 '
-                              docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g;
-							  docker stop demo || true;
-							  docker rm demo || true;
-							  docker pull noomcomputer/demo:1.0.1;
-							  docker run -d --name demo -p 8083:8083 noomcomputer/demo:1.0.1
-							  docker logout || true;
-							'
-						'''
+						#sh '''
+						#	# Commands within this block share the same ssh-agent session context
+						#	ssh root@beonesuccess.com -p 2522 '
+                        #      docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g;
+						#	  docker stop demo || true;
+						#	  docker rm demo || true;
+						#	  docker pull noomcomputer/demo:1.0.1;
+						#	  docker run -d --name demo -p 8083:8083 noomcomputer/demo:1.0.1
+						#	  docker logout || true;
+						#	'
+						#'''
 					}
                 }
 			}
