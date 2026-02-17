@@ -44,11 +44,11 @@ pipeline {
             }
 		}*/
 		// mandatory
-        /*stage('Build') {
+        stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
-        }*/
+        }
         /*stage('Test') {
             steps {
                 sh 'mvn test'
@@ -107,7 +107,7 @@ pipeline {
             }
         }*/
 		// mandatory
-        /*stage('Push image') {
+        stage('Push image') {
             steps {
                 script {
 					// The access token is securely passed via the environment variable
@@ -126,7 +126,7 @@ pipeline {
 					//sh "docker logout"
                 }
             }
-        }*/
+        }
         /*stage('Pull and Deploy Docker Image Local') {
             steps {
                 script {
