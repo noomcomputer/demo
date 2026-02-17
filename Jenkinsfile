@@ -243,11 +243,14 @@ pipeline {
 					//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
 					//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
 					
-					sh 'ssh root@beonesuccess.com -p 2522 "
-						uptime;
-						docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
-						docker logout;
-						"'
+                    sh '''
+                        # Commands within this block share the same ssh-agent session context
+                        ssh root@beonesuccess.com -p 2522 '
+						  uptime;
+                          docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
+                          docker logout;
+                        '
+                    '''
 				}
 			}
 		}
