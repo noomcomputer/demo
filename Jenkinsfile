@@ -243,6 +243,7 @@ pipeline {
                 script {
 					def remoteHost = "beonesuccess.com";
 					def remotePort = "2522";
+					def remoteCommand = "ls -ltr" // Groovy variable
 
                     // Define the image name
                     def imageName = '${DOCKERHUB_REPO}:${VERSION}'
@@ -277,10 +278,10 @@ pipeline {
 						//sh 'ssh -o StrictHostKeyChecking=no root@beonesuccess.com -p 2522 "uptime"' // Example command
 						//sh 'scp ./source/file user@remote-host:/remote/target/path' // Example file transfer
 
+						sh "ssh root@beonesuccess.com -p 2522 ${remoteCommand}"
 						sh '''
 							# Commands within this block share the same ssh-agent session context
-							#ssh root@beonesuccess.com -p 2522 '
-							ssh root@${remoteHost} -p ${remotePort} '
+							ssh root@beonesuccess.com -p 2522 '
                               docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g;
 							  docker stop demo || true;
 							  docker rm demo || true;
