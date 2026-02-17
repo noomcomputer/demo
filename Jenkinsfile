@@ -280,7 +280,7 @@ pipeline {
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
-							  docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
+							  docker login -u noomcomputer -p $DOCKERHUB_ACCESS_TOKEN;
 							  docker stop demo || true;
 							  docker rm demo || true;
 							  docker pull noomcomputer/demo:1.0.1;
