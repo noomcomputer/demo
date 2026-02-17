@@ -240,6 +240,7 @@ pipeline {
 			steps {
                 script {
 					def uptime = "uptime";
+
                     // Define the image name
                     def imageName = '${DOCKERHUB_REPO}:${VERSION}'
                     // Define the container name and port mapping
@@ -276,7 +277,10 @@ pipeline {
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
-							  ${uptime};
+							  docker login -u noomcomputer -p dckr_pat_1HfmqKG6CNfx4TTJsejQGLlyX7g;
+							  docker stop demo || true
+							  docker rm demo || true
+							  docker logout;
 							'
 						'''
 					}
