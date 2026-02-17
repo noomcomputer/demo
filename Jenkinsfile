@@ -239,6 +239,7 @@ pipeline {
 		stage('Deploy via SSH Agent') {
 			steps {
                 script {
+					def uptime = "uptime";
                     // Define the image name
                     def imageName = '${DOCKERHUB_REPO}:${VERSION}'
                     // Define the container name and port mapping
@@ -275,9 +276,7 @@ pipeline {
 						sh '''
 							# Commands within this block share the same ssh-agent session context
 							ssh root@beonesuccess.com -p 2522 '
-							  uptime;
-							  docker login -u noomcomputer -p ${DOCKERHUB_ACCESS_TOKEN};
-							  docker logout;
+							  ${uptime};
 							'
 						'''
 					}
