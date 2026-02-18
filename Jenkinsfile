@@ -275,7 +275,7 @@ pipeline {
                 }
 			}
 		}
-        stage('Deploy to Minikube') {
+        /*stage('Deploy to Minikube') {
             steps {
                 script {
                     // Use the kubectl command to apply the Kubernetes YAML file
@@ -283,7 +283,7 @@ pipeline {
                     sh 'kubectl apply -f k8s.deployment.yaml'
                 }
             }
-        }
+        }*/
         /*stage('Deploy to Minikube') {
             steps {
                 withKubeConfig([credentialsId: 'kebernetes-access-token', serverUrl: 'https://192.168.217.128:8443']) {
