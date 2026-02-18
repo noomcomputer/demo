@@ -284,6 +284,18 @@ pipeline {
                 }
             }
         }
+        /*stage('Deploy to Minikube') {
+            steps {
+                withKubeConfig([credentialsId: 'kebernetes-access-token', serverUrl: 'https://192.168.217.128:8443']) {
+					sh '/usr/local/bin/kubectl version'
+					sh '/usr/local/bin/kubectl config view'
+					sh '/usr/local/bin/kubectl get pods --namespace=jenkins'
+					sh '/usr/local/bin/kubectl get svc --namespace=jenkins'
+                    //sh '/usr/local/bin/kubectl delete -f k8s.deployment.yml --namespace=jenkins'
+                    sh '/usr/local/bin/kubectl apply -f k8s.deployment.yml --namespace=jenkins'
+                }
+            }
+        }*/
     }
 
     post {
