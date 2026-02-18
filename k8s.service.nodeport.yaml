@@ -1,4 +1,6 @@
 # kubectl apply -f k8s.service.nodeport.yaml
+# minikube service list
+# minikube service demo-service --url
 # kubectl get services
 # kubectl describe service demo-service
 # kubectl port-forward svc/demo-service 8083:8083
